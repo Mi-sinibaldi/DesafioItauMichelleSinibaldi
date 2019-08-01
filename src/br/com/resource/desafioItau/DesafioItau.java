@@ -52,7 +52,7 @@ public class DesafioItau {
                 long cota = (long) (op.getQUANTIDADE() * result.getVL_PRECO());
                 op.setRESULTADO(cota);
             } else {
-                op.setRESULTADO(0);
+                op.setRESULTADO(1);
             }
 
             Resultado_SubProduto retorno = SpResultado.stream()
