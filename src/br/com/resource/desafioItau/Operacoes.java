@@ -7,6 +7,8 @@ package br.com.resource.desafioItau;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -18,8 +20,8 @@ import java.util.List;
 public  class Operacoes {
 
     private  long CD_OPERACAO;
-    private  Date DT_INICIO;
-    private  Date DT_FIM;
+    private  LocalDate DT_INICIO;
+    private  LocalDate DT_FIM;
     private  String NM_EMPRESA;
     private  String NM_MESA;
     private  String NM_ESTRATEGIA;
@@ -41,7 +43,7 @@ public  class Operacoes {
         this.RESULTADO = RESULTADO;
     }
 
-    public Operacoes(long CD_OPERACAO, Date DT_INICIO, Date DT_FIM, String NM_EMPRESA, String NM_MESA, String NM_ESTRATEGIA, String NM_CENTRALIZADOR, String NM_GESTOR, String NM_SUBGESTOR, String NM_SUBPRODUTO, String NM_CARACTERISTICA, String CD_ATIVO_OBJETO, float QUANTIDADE, long ID_PRECO) {
+    public Operacoes(long CD_OPERACAO, LocalDate DT_INICIO, LocalDate DT_FIM, String NM_EMPRESA, String NM_MESA, String NM_ESTRATEGIA, String NM_CENTRALIZADOR, String NM_GESTOR, String NM_SUBGESTOR, String NM_SUBPRODUTO, String NM_CARACTERISTICA, String CD_ATIVO_OBJETO, float QUANTIDADE, long ID_PRECO) {
         this.CD_OPERACAO = CD_OPERACAO;
         this.DT_INICIO = DT_INICIO;
         this.DT_FIM = DT_FIM;
@@ -61,6 +63,7 @@ public  class Operacoes {
     
     public static  List<Operacoes> ConverteParaLista(String caminho) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         List<String> Linhas = Arquivos.LerArquivo(caminho);
         
         List<Operacoes> operacoes = new ArrayList();
@@ -69,8 +72,8 @@ public  class Operacoes {
 
             operacoes.add(new Operacoes(
                     Long.parseLong(array[0]),
-                    sdf.parse(array[1]),
-                    sdf.parse(array[2]),
+                    LocalDate.parse(array[1],formatter),
+                    LocalDate.parse(array[2],formatter),
                     array[3],
                     array[4],
                     array[5],
@@ -92,11 +95,11 @@ public  class Operacoes {
         return CD_OPERACAO;
     }
 
-    public  Date getDT_INICIO() {
+    public  LocalDate getDT_INICIO() {
         return DT_INICIO;
     }
 
-    public  Date getDT_FIM() {
+    public  LocalDate getDT_FIM() {
         return DT_FIM;
     }
 

@@ -10,6 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Period;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
@@ -39,12 +40,13 @@ public class DesafioItau {
         List<Resultado_SubProduto> SpResultado = new ArrayList();
 
         for (Operacoes op : dadosOperacoes) {
-            long dias = op.getDT_FIM().getTime() - op.getDT_INICIO().getTime();
+            Period dias = op.getDT_INICIO().until(op.getDT_FIM());
+            
             //int diffDays = (int) (diff / (24 * 60 * 60 * 1000));
 
             DadosMercado result = dados.stream()
                     .filter(line -> line.getID_PRECO() == op.getID_PRECO()
-                            && line.getNU_PRAZO_DIAS_CORRIDOS() == dias)
+                            && line.getNU_PRAZO_DIAS_CORRIDOS() == dias.getDays())
                     .findAny()
                     .orElse(null);
 
@@ -52,7 +54,7 @@ public class DesafioItau {
                 long cota = (long) (op.getQUANTIDADE() * result.getVL_PRECO());
                 op.setRESULTADO(cota);
             } else {
-                op.setRESULTADO(1);
+                op.setRESULTADO(0);
             }
 
             Resultado_SubProduto retorno = SpResultado.stream()
